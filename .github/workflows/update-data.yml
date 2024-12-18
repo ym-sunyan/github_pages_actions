@@ -3,7 +3,8 @@ name: Update Data
 on:
   push:
     paths:
-      - 'configs/**'  # 监控 configs 文件夹中的变化
+      - '**/config.txt'
+  workflow_dispatch:  # 添加这一行以支持手动触发
 
 jobs:
   build:
@@ -17,8 +18,8 @@ jobs:
       run: |
         mkdir -p output
         echo '{' > output/data.json
-        for file in configs/*.txt; do
-          echo "\"$(basename $file .txt)\": \"$(cat $file)\"," >> output/data.json
+        find . -name 'config.txt' | while read file; do
+          echo "\"$(basename $(dirname $file))\": \"$(cat $file)\"," >> output/data.json
         done
         echo '"end": "end"}' >> output/data.json
 
