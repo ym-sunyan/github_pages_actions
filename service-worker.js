@@ -1,5 +1,5 @@
 self.addEventListener('fetch', event => {
-  if (event.request.url.includes('data.json')) {
+  if (event.request.url.includes('output/data.json')) {
     event.respondWith(
       fetch(event.request).then(response => {
         return caches.open('dynamic-cache').then(cache => {
