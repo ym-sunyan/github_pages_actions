@@ -2,130 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Read Config Files</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
-        }
-        h1 {
-            text-align: center;
-        }
-        #content {
-            width: 80%;
-            max-width: 800px;
-        }
-        .folder {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        .file-content {
-            margin-left: 20px;
-            white-space: pre-wrap; /* Preserve whitespace and line breaks */
-        }
-    </style>
+    <title>Display Data</title>
 </head>
 <body>
-    <h1>Config Files Content</h1>
     <div id="content"></div>
-
     <script>
-        // 异步函数用于从 GitHub 仓库中获取文件内容
-        // owner：GitHub 仓库的所有者用户名。
-        // repo：GitHub 仓库的名称。
-        // path：文件或目录的路径。
-        // url：构建 GitHub API 请求的 URL。
-        // response：通过 fetch API 获取的响应。
-        // data：解析响应的 JSON 数据。
-        async function fetchFileContent(owner, repo, path) {
-            try {
-                const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch ${path}: ${response.statusText}`);
-                }
-                const data = await response.json();
-                if (Array.isArray(data)) {
-                    const promises = data.map(async (item) => {
-                        if (item.type === 'file' && item.name === 'config.txt') {
-                            const fileContent = await fetchFileContent(owner, repo, item.path);
-                            const uploadTime = await fetchFileUploadTime(owner, repo, item.path);
-                            displayContent(item.path, fileContent, uploadTime);
-                        } else if (item.type === 'dir') {
-                            await fetchFileContent(owner, repo, item.path);
-                        }
-                    });
-                    await Promise.all(promises);
-                } else {
-                    if (!data.content) {
-                        throw new Error(`No content found at ${path}`);
-                    }
-                    const content = atob(data.content);
-                    const decoder = new TextDecoder('utf-8');
-                    return decoder.decode(new Uint8Array([...content].map(char => char.charCodeAt(0))));
-                }
-            } catch (error) {
-                console.error(`Error fetching file content: ${error.message}`);
-            }
-        }
-
-        // 异步函数用于获取文件的上传时间
-        async function fetchFileUploadTime(owner, repo, path) {
-            try {
-                const url = `https://api.github.com/repos/${owner}/${repo}/commits?path=${path}`;
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch commit info for ${path}: ${response.statusText}`);
-                }
-                const data = await response.json();
-                if (data.length > 0) {
-                    return data[0].commit.committer.date;
-                } else {
-                    throw new Error(`No commit info found for ${path}`);
-                }
-            } catch (error) {
-                console.error(`Error fetching file upload time: ${error.message}`);
-            }
-        }
-
-        // 用于在页面上显示文件内容和上传时间。
-        // contentDiv：页面上用于显示内容的主容器。
-        // folderDiv：用于显示文件路径的容器。
-        // fileContentDiv：用于显示文件内容的容器。
-        // 将 folderDiv 和 fileContentDiv 添加到 contentDiv 中。
-        function displayContent(path, content, uploadTime) {
-            const contentDiv = document.getElementById('content');
-            const folderDiv = document.createElement('div');
-            folderDiv.className = 'folder';
-            folderDiv.innerHTML = `<strong>${path}</strong> (Uploaded on: ${new Date(uploadTime).toLocaleString()})`;
-            const fileContentDiv = document.createElement('div');
-            fileContentDiv.className = 'file-content';
-            fileContentDiv.textContent = content;
-            folderDiv.appendChild(fileContentDiv);
-            contentDiv.appendChild(folderDiv);
-        }
-
-        // 用于初始化加载配置文件
-        // owner 和 repo：指定 GitHub 仓库的所有者和名称。
-        // path：根目录路径。
-        // 调用 fetchFileContent 函数开始递归获取文件内容。
-        async function loadConfigFiles() {
-            const owner = 'ym-sunyan';
-            const repo = 'github_pages_actions';
-            const path = ''; // Root directory
-            await fetchFileContent(owner, repo, path);
-        }
-
-        loadConfigFiles();
+        fetch('output/data.json')
+            .then(response => response.json())
+            .then(data => {
+                const contentDiv = document.getElementById('content');
+                contentDiv.innerHTML = JSON.stringify(data, null, 2);
+            })
+            .catch(error => console.error('Error fetching data:', error));
     </script>
 </body>
 </html>
