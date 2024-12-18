@@ -21,7 +21,7 @@ jobs:
       run: |
         mkdir -p output
         echo '{' > output/data.json
-        find . -name 'config.txt' | while read file; do
+        find . -type f -name 'config.txt' | while read file; do
           filename=$(basename "$file")
           filepath=$(dirname "$file")
           filecontent=$(cat "$file" | jq -c .)
