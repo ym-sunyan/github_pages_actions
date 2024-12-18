@@ -22,7 +22,11 @@ jobs:
         mkdir -p output
         echo '{' > output/data.json
         find . -name 'config.txt' | while read file; do
-          echo "\"$(basename $(dirname $file))\": \"$(cat $file)\"," >> output/data.json
+          filename=$(basename "$file")
+          filepath=$(dirname "$file")
+          filecontent=$(cat "$file" | jq -c .)
+          filectime=$(stat -c %y "$file")
+          echo "\"$filename\": {\"path\": \"$filepath\", \"content\": $filecontent, \"created_time\": \"$filectime\"}," >> output/data.json
         done
         echo '"end": "end"}' >> output/data.json
 
