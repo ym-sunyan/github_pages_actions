@@ -1,0 +1,31 @@
+name: Update Data
+
+on:
+  push:
+    paths:
+      - 'configs/**'  # 监控 configs 文件夹中的变化
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Read config files and generate data.json
+      run: |
+        mkdir -p output
+        echo '{' > output/data.json
+        for file in configs/*.txt; do
+          echo "\"$(basename $file .txt)\": \"$(cat $file)\"," >> output/data.json
+        done
+        echo '"end": "end"}' >> output/data.json
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git add output/data.json
+        git commit -m 'Update data.json'
+        git push
