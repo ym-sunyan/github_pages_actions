@@ -30,13 +30,13 @@
                 const contentDiv = document.getElementById('content');
                 contentDiv.innerHTML = '';
 
-                for (const [filename, modelData] of Object.entries(data)) {
-                    if (filename !== 'end') {
+                for (const [key, modelData] of Object.entries(data)) {
+                    if (key !== 'end') {
                         const modelDiv = document.createElement('div');
                         modelDiv.className = 'model-container';
 
                         const modelTitle = document.createElement('h3');
-                        modelTitle.textContent = `Model: ${filename}`;
+                        modelTitle.textContent = `Model: ${key}`;
                         modelDiv.appendChild(modelTitle);
 
                         const modelPath = document.createElement('p');
