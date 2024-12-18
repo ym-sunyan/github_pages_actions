@@ -24,9 +24,12 @@ jobs:
         find . -type f -name 'config.txt' | while read file; do
           filename=$(basename "$file")
           filepath=$(dirname "$file")
+          topdir=$(echo "$filepath" | cut -d'/' -f2)
+          subdir=$(echo "$filepath" | awk -F'/' '{print $(NF-1)}')
+          key="${topdir}_${subdir}"
           filecontent=$(cat "$file" | jq -c .)
           filectime=$(stat -c %y "$file")
-          echo "\"$filename\": {\"path\": \"$filepath\", \"content\": $filecontent, \"created_time\": \"$filectime\"}," >> output/data.json
+          echo "\"$key\": {\"path\": \"$filepath\", \"content\": $filecontent, \"created_time\": \"$filectime\"}," >> output/data.json
         done
         echo '"end": "end"}' >> output/data.json
 
