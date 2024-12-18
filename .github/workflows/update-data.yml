@@ -25,8 +25,8 @@ jobs:
           filename=$(basename "$file")
           filepath=$(dirname "$file")
           topdir=$(echo "$filepath" | cut -d'/' -f2)
-          subdir=$(echo "$filepath" | awk -F'/' '{print $(NF-1)}')
-          key="${topdir}_${subdir}"
+          lastdir=$(echo "$filepath" | awk -F'/' '{print $NF}')
+          key="${topdir}_${lastdir}"
           filecontent=$(cat "$file" | jq -c .)
           filectime=$(stat -c %y "$file")
           echo "\"$key\": {\"path\": \"$filepath\", \"content\": $filecontent, \"created_time\": \"$filectime\"}," >> output/data.json
