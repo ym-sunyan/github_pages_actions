@@ -1,1 +1,11 @@
-这是模型B的配置参数，测试更新文件actions执行之后data.json的变化。使用了meta之后的再次更新
+{
+  "model": {
+    "name": "tele chat 3b",
+    "size": "3b"
+  },
+  "specifications": {
+    "decoding": 28,
+    "ROM": "2G",
+    "RAM": "2G"
+  }
+}
