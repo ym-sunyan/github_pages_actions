@@ -1,5 +1,5 @@
 {
 "modelC": "这是模型B的配置参数",
-"modelB": "这是模型B的配置参数",
+"modelB": "这是模型B的配置参数，测试更新文件actions执行之后data.json的变化",
 "modelA": "这是模型A的配置参数，是否自动执行actions",
 "end": "end"}
