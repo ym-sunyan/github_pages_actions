@@ -1,5 +1,6 @@
 {
-"config.txt": {"path": "./modelC", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-18 07:32:22.120442502 +0000"},
-"config.txt": {"path": "./modelB", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-18 07:32:22.120442502 +0000"},
-"config.txt": {"path": "./modelA", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-18 07:32:22.119442492 +0000"},
+"config.txt": {"path": "./modelC", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-18 07:37:11.261098487 +0000"},
+"config.txt": {"path": "./modelB", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-18 07:37:11.261098487 +0000"},
+"config.txt": {"path": "./modelA", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-18 07:37:11.261098487 +0000"},
+"config.txt": {"path": "./modelA/test/test1", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-18 07:37:11.261098487 +0000"},
 "end": "end"}
