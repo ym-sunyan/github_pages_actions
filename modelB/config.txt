@@ -1,1 +1,1 @@
-这是模型B的配置参数，测试更新文件actions执行之后data.json的变化
+这是模型B的配置参数，测试更新文件actions执行之后data.json的变化。使用了meta之后的再次更新
