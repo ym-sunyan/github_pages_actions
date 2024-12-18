@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - '**/config.txt'
-  workflow_dispatch:  # 添加这一行以支持手动触发
+  workflow_dispatch:
 
 jobs:
   build:
@@ -13,6 +13,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        persist-credentials: false
 
     - name: Read config files and generate data.json
       run: |
@@ -24,6 +26,8 @@ jobs:
         echo '"end": "end"}' >> output/data.json
 
     - name: Commit and push changes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
