@@ -1,0 +1,11 @@
+{
+  "model": {
+    "name": "tele chat 3b",
+    "size": "3b"
+  },
+  "specifications": {
+    "decoding": 28,
+    "ROM": "2G",
+    "RAM": "2G"
+  }
+}
