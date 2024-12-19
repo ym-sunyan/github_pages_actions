@@ -27,8 +27,13 @@ jobs:
       run: |
         mkdir -p master-branch/output
 
-    - name: Copy data.json to master branch
+    - name: Copy or replace data.json to master branch
       run: |
+        if [ -f master-branch/output/data.json ]; then
+          echo "data.json exists in master branch, replacing it."
+        else
+          echo "data.json does not exist in master branch, copying it."
+        fi
         cp output/data.json master-branch/output/data.json
 
     - name: Commit and push changes to master branch
