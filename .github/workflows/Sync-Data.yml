@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   sync-data:
@@ -20,7 +21,7 @@ jobs:
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git checkout master
-          cp data.json path/to/master/index.html
-          git add path/to/master/index.html
+          cp data.json path/to/master/data.json
+          git add path/to/master/data.json
           git commit -m "Update data.json from main branch"
           git push origin master
