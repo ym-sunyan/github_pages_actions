@@ -22,7 +22,10 @@ jobs:
           git config --global user.email 'github-actions@github.com'
           git checkout -b master || git checkout master
           mkdir -p output
-          cp -f output/data.json output/data.json
+          cp output/data.json /tmp/data.json
+          git checkout master
+          mkdir -p output
+          cp /tmp/data.json output/data.json
           git add output/data.json
           git commit -m "Update data.json from main branch"
           git push origin master
