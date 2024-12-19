@@ -1,4 +1,4 @@
-name: Sync data.json
+name: Sync data2
 
 on:
   workflow_dispatch:
