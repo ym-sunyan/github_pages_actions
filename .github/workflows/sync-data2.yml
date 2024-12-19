@@ -20,6 +20,7 @@ jobs:
       with:
         ref: master
         path: 'master-branch'
+        fetch-depth: 0 # Ensure we have the full history for master branch
 
     - name: Ensure master branch directory exists
       run: |
@@ -35,5 +36,9 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add output/data.json
-        git diff --quiet && git diff --staged --quiet || git commit -m "Sync data.json from main to master"
-        git push
+        if git diff --quiet && git diff --staged --quiet; then
+          echo "No changes detected in data.json"
+        else
+          git commit -m "Sync data.json from main to master"
+          git push
+        fi
