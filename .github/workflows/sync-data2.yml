@@ -1,4 +1,4 @@
-name: Sync data.json to master on changes
+name: Sync data.json to master on changes and manual trigger
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'output/data.json'
+  workflow_dispatch:
 
 jobs:
   sync:
