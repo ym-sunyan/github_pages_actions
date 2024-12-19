@@ -17,6 +17,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
+          git config pull.rebase true
           git checkout -b master || git checkout master
           mkdir -p output
           echo "Copying data.json from main to temporary location"
@@ -31,5 +32,8 @@ jobs:
           git commit -m "Update data.json from main branch" || echo "No changes to commit"
           echo "Pulling latest changes from remote master"
           git pull origin master --rebase || (git rebase --abort && git pull origin master)
+          echo "Resolving conflicts"
+          git add output/data.json
+          git rebase --continue || echo "No more conflicts to resolve"
           echo "Pushing changes to master"
           git push origin master || echo "Nothing to push"
