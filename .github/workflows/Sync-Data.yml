@@ -1,15 +1,12 @@
 name: Sync Data
-
 on:
   push:
-    branches:
-      - main
+    paths:
+      - 'output/data.json'
   workflow_dispatch:
-
 jobs:
   sync-data:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v2
