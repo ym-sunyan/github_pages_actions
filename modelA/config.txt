@@ -1,6 +1,6 @@
 {
   "model": {
-    "name": "tele chat 3b 测试替换",
+    "name": "tele chat 3b 测试替换， 最新的测试",
     "size": "3b"
   },
   "specifications": {
