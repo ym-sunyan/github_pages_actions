@@ -1,6 +1,6 @@
 {
   "model": {
-    "name": "tele chat 3b test11gggggggggggggg",
+    "name": "tele chat 3b test11的顶顶顶顶顶",
     "size": "3b"
   },
   "specifications": {
