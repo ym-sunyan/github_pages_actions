@@ -1,9 +1,9 @@
 {
-"modelC_modelC": {"path": "./modelC", "content": {"model":{"name":"tele chat 3b test112222","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-19 06:48:29.538706206 +0000"},
-"modelC_test1": {"path": "./modelC/test/test1", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-19 06:48:29.538706206 +0000"},
-"modelC_test2": {"path": "./modelC/test/test2", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-19 06:48:29.538706206 +0000"},
-"modelB_modelB": {"path": "./modelB", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-19 06:48:29.538706206 +0000"},
-"modelA_modelA": {"path": "./modelA", "content": {"model":{"name":"tele chat 3b 测试替换","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-19 06:48:29.538706206 +0000"},
-"modelA_test1": {"path": "./modelA/test/test1", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-19 06:48:29.538706206 +0000"},
-"modelA_test2": {"path": "./modelA/test/test2", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-19 06:48:29.538706206 +0000"},
+"modelC_modelC": {"path": "./modelC", "content": {"model":{"name":"tele chat 3b test11gggggggggggggg","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-19 07:02:27.103841850 +0000"},
+"modelC_test1": {"path": "./modelC/test/test1", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-19 07:02:27.103841850 +0000"},
+"modelC_test2": {"path": "./modelC/test/test2", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-19 07:02:27.103841850 +0000"},
+"modelB_modelB": {"path": "./modelB", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-19 07:02:27.103841850 +0000"},
+"modelA_modelA": {"path": "./modelA", "content": {"model":{"name":"tele chat 3b 测试替换","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-19 07:02:27.103841850 +0000"},
+"modelA_test1": {"path": "./modelA/test/test1", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-19 07:02:27.103841850 +0000"},
+"modelA_test2": {"path": "./modelA/test/test2", "content": {"model":{"name":"tele chat 3b","size":"3b"},"specifications":{"decoding":28,"ROM":"2G","RAM":"2G"}}, "created_time": "2024-12-19 07:02:27.103841850 +0000"},
 "end": "end"}
