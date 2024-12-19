@@ -23,6 +23,10 @@ jobs:
         ref: master
         path: 'master-branch'
 
+    - name: Ensure master branch directory exists
+      run: |
+        mkdir -p master-branch/output
+
     - name: Copy data.json to master branch
       run: |
         cp output/data.json master-branch/output/data.json
