@@ -1,6 +1,6 @@
 {
   "model": {
-    "name": "tele chat 3b",
+    "name": "tele chat 3bccccccccccccccccc",
     "size": "3b"
   },
   "specifications": {
