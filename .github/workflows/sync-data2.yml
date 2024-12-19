@@ -1,28 +1,37 @@
-name: Sync data.json
+name: Sync data.json to master
 
 on:
   workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
 
 jobs:
-  sync-file:
+  sync:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout main branch
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         ref: main
-        fetch-depth: 0  # Fetch all branches
-
-    - name: Fetch all branches
-      run: git fetch --all
 
     - name: Checkout master branch
-      run: git checkout master
+      uses: actions/checkout@v3
+      with:
+        ref: master
+        path: 'master-branch'
 
     - name: Copy data.json to master branch
       run: |
-        cp output/data.json .
-        git add data.json
-        git commit -m 'Sync data.json from main to master'
-        git push origin master
+        cp output/data.json master-branch/output/data.json
+
+    - name: Commit and push changes to master branch
+      run: |
+        cd master-branch
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add output/data.json
+        git commit -m "Sync data.json from main to master"
+        git push
