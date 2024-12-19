@@ -3,24 +3,24 @@ name: Sync Data
 on:
   push:
     branches:
-      - A
+      - main
 
 jobs:
   sync-data:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout A branch
+      - name: Checkout main branch
         uses: actions/checkout@v2
         with:
-          ref: A
+          ref: main
 
-      - name: Copy data.json to B branch
+      - name: Copy data.json to master branch
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          git checkout B
-          cp data.json path/to/B/index.html
-          git add path/to/B/index.html
-          git commit -m "Update data.json from A branch"
-          git push origin B
+          git checkout master
+          cp data.json path/to/master/index.html
+          git add path/to/master/index.html
+          git commit -m "Update data.json from main branch"
+          git push origin master
