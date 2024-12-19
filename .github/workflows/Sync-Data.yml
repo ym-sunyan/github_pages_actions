@@ -20,8 +20,9 @@ jobs:
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          git checkout master
-          cp data.json path/to/master/data.json
-          git add path/to/master/data.json
+          git checkout -b master || git checkout master
+          mkdir -p output
+          cp output/data.json output/data.json
+          git add output/data.json
           git commit -m "Update data.json from main branch"
           git push origin master
