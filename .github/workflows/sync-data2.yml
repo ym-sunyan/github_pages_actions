@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'output/data.json'
   workflow_dispatch:
 
 jobs:
@@ -27,11 +25,18 @@ jobs:
       run: |
         mkdir -p master-branch/output
 
-    - name: Copy or replace data.json to master branch
+    - name: Check if data.json exists and copy to master branch
+      id: check_data_json
       run: |
-        cp output/data.json master-branch/output/data.json
+        if [ -f output/data.json ]; then
+          cp output/data.json master-branch/output/data.json
+          echo "::set-output name=data_exists::true"
+        else
+          echo "::set-output name=data_exists::false"
+        fi
 
     - name: Commit and push changes to master branch
+      if: steps.check_data_json.outputs.data_exists == 'true'
       run: |
         cd master-branch
         git config --local user.email "action@github.com"
