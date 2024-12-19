@@ -30,6 +30,6 @@ jobs:
           echo "Committing changes"
           git commit -m "Update data.json from main branch" || echo "No changes to commit"
           echo "Pulling latest changes from remote master"
-          git pull origin master --rebase
+          git pull origin master --rebase || (git rebase --abort && git pull origin master)
           echo "Pushing changes to master"
           git push origin master || echo "Nothing to push"
