@@ -19,10 +19,15 @@ jobs:
           git config --global user.email 'github-actions@github.com'
           git checkout -b master || git checkout master
           mkdir -p output
+          echo "Copying data.json from main to temporary location"
           cp output/data.json /tmp/data.json
           git checkout master
           mkdir -p output
+          echo "Copying data.json from temporary location to master"
           cp /tmp/data.json output/data.json
+          echo "Adding data.json to git"
           git add output/data.json
-          git commit -m "Update data.json from main branch"
-          git push origin master
+          echo "Committing changes"
+          git commit -m "Update data.json from main branch" || echo "No changes to commit"
+          echo "Pushing changes to master"
+          git push origin master || echo "Nothing to push"
