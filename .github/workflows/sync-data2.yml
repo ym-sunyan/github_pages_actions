@@ -1,4 +1,4 @@
-name: Sync data2
+name: Sync data.json
 
 on:
   workflow_dispatch:
@@ -12,12 +12,16 @@ jobs:
       uses: actions/checkout@v2
       with:
         ref: main
+        fetch-depth: 0  # Fetch all branches
+
+    - name: Fetch all branches
+      run: git fetch --all
+
+    - name: Checkout master branch
+      run: git checkout master
 
     - name: Copy data.json to master branch
       run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git checkout master
         cp output/data.json .
         git add data.json
         git commit -m 'Sync data.json from main to master'
