@@ -1,0 +1,45 @@
+name: Update Data
+
+on:
+  push:
+    paths:
+      - '**/config.txt'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        persist-credentials: false
+
+    - name: Read config files and generate data.json
+      run: |
+        mkdir -p output
+        echo '{' > output/data.json
+        find . -type f -name 'config.txt' | while read file; do
+          filename=$(basename "$file")
+          filepath=$(dirname "$file")
+          topdir=$(echo "$filepath" | cut -d'/' -f2)
+          lastdir=$(echo "$filepath" | awk -F'/' '{print $NF}')
+          key="${topdir}_${lastdir}"
+          filecontent=$(cat "$file" | jq -c .)
+          filectime=$(stat -c %y "$file")
+          echo "\"$key\": {\"path\": \"$filepath\", \"content\": $filecontent, \"created_time\": \"$filectime\"}," >> output/data.json
+        done
+        echo '"end": "end"}' >> output/data.json
+
+    - name: Commit and push changes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        git add output/data.json
+        git commit -m 'Update data.json'
+        git push origin HEAD:main
