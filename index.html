@@ -36,14 +36,15 @@
             const displayModels = (data) => {
                 return Object.entries(data).map(([key, modelData], index) => {
                     if (key !== 'end') {
-                        return (
-                            <Col span={8} key={key}>
-                                <Card title={`Model: ${modelData.content.model.name}`} bordered={false}>
-                                    <p>Path: {modelData.path}</p>
-                                    <p>Created Time: {modelData.created_time.split('.')[0]}</p>
-                                    <pre>{JSON.stringify(modelData.content, null, 2)}</pre>
-                                </Card>
-                            </Col>
+                        console.log(modelData)
+                        // return (
+                        //     <Col span={8} key={key}>
+                        //         <Card title={`Model: ${modelData.content.model.name}`} bordered={false}>
+                        //             <p>Path: {modelData.path}</p>
+                        //             <p>Created Time: {modelData.created_time.split('.')[0]}</p>
+                        //             <pre>{JSON.stringify(modelData.content, null, 2)}</pre>
+                        //         </Card>
+                        //     </Col>
                         );
                     }
                     return null;
@@ -67,17 +68,17 @@
 
             return (
                 <div>
-                    <div>All Models</div>
-                    <div id="searchContainer">
-                        <Input
-                            type="text"
-                            value={searchInput}
-                            placeholder="Search by Model Name"
-                            onChange={(e) => setSearchInput(e.target.value)}
-                            style={{ width: '200px', marginRight: '10px' }}
-                        />
-                        <Button onClick={clearSearch}>Clear All</Button>
-                    </div>
+                    // <div>All Models</div>
+                    // <div id="searchContainer">
+                    //     <Input
+                    //         type="text"
+                    //         value={searchInput}
+                    //         placeholder="Search by Model Name"
+                    //         onChange={(e) => setSearchInput(e.target.value)}
+                    //         style={{ width: '200px', marginRight: '10px' }}
+                    //     />
+                    //     <Button onClick={clearSearch}>Clear All</Button>
+                    // </div>
                     <Row gutter={[16, 16]}>
                         {displayModels(filterModels())}
                     </Row>
