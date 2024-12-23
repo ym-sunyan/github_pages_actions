@@ -97,7 +97,7 @@
                     modelDiv.className = 'model-container';
 
                     const modelTitle = document.createElement('h3');
-                    modelTitle.textContent = `Model: ${key}`;
+                    modelTitle.textContent = `Model: ${modelData.content.model.name}`;
                     modelDiv.appendChild(modelTitle);
 
                     const modelPath = document.createElement('p');
@@ -105,7 +105,8 @@
                     modelDiv.appendChild(modelPath);
 
                     const modelCreatedTime = document.createElement('p');
-                    modelCreatedTime.textContent = `Created Time: ${modelData.created_time}`;
+                    const create_time = modelData.created_time.split('.')[0]
+                    modelCreatedTime.textContent = `Created Time: ${create_time}`;
                     modelDiv.appendChild(modelCreatedTime);
 
                     const modelContent = document.createElement('pre');
