@@ -10,7 +10,13 @@
         .model-container {
             border: 1px solid #000;
             padding: 10px;
-            margin: 10px 0;
+            margin: 10px;
+            flex: 1;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: -10px;
         }
     </style>
 </head>
@@ -40,8 +46,17 @@
             const contentDiv = document.getElementById('content');
             contentDiv.innerHTML = '';
 
+            let rowDiv = null;
+            let count = 0;
+
             for (const [key, modelData] of Object.entries(data)) {
                 if (key !== 'end') {
+                    if (count % 3 === 0) {
+                        rowDiv = document.createElement('div');
+                        rowDiv.className = 'row';
+                        contentDiv.appendChild(rowDiv);
+                    }
+
                     const modelDiv = document.createElement('div');
                     modelDiv.className = 'model-container';
 
@@ -61,7 +76,8 @@
                     modelContent.textContent = JSON.stringify(modelData.content, null, 2);
                     modelDiv.appendChild(modelContent);
 
-                    contentDiv.appendChild(modelDiv);
+                    rowDiv.appendChild(modelDiv);
+                    count++;
                 }
             }
         }
