@@ -49,8 +49,7 @@
                 key.toLowerCase().includes(searchTerm.toLowerCase())
             );
 
-            return (
-                <div>
+            return (<div>
                     <div id="searchContainer">
                         <Input
                             placeholder="Search by Model"
@@ -77,8 +76,7 @@
                             <p>No models found</p>
                         )}
                     </Row>
-                </div>
-            );
+                </div>);
         };
 
         ReactDOM.render(<App />, document.getElementById('content'));
