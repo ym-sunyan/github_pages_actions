@@ -13,11 +13,20 @@
             align-items: center;
             font-family: Arial, sans-serif;
         }
-        #searchInput {
+        #searchContainer {
+            display: flex;
+            align-items: center;
             margin: 20px 0;
+        }
+        #searchInput {
             padding: 10px;
             width: 300px;
             text-align: center;
+        }
+        #clearButton {
+            margin-left: 10px;
+            padding: 10px;
+            cursor: pointer;
         }
         .model-container {
             border: 1px solid #000;
@@ -45,7 +54,10 @@
 </head>
 <body>
     <div>测试</div>
-    <input type="text" id="searchInput" placeholder="Search by Model" oninput="filterModels()">
+    <div id="searchContainer">
+        <input type="text" id="searchInput" placeholder="Search by Model" oninput="filterModels()">
+        <button id="clearButton" onclick="clearSearch()">Clear All</button>
+    </div>
     <div id="content"></div>
     <script>
         if ('serviceWorker' in navigator) {
@@ -60,6 +72,7 @@
         fetch(`output/data.json?t=${timestamp}`, { cache: 'no-store' })
             .then(response => response.json())
             .then(data => {
+                console.log('Fetched data:', data); // 打印读取的内容
                 modelsData = data;
                 displayModels(data);
             })
@@ -115,7 +128,16 @@
                 }
             }
 
-            displayModels(filteredData);
+            if (Object.keys(filteredData).length === 0) {
+                document.getElementById('content').innerHTML = '<p>No models found</p>';
+            } else {
+                displayModels(filteredData);
+            }
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            displayModels(modelsData);
         }
     </script>
 </body>
