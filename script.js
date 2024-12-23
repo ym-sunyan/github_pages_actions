@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fetch('nodes_data/datas.json')
+    fetch('notes_data/datas.json')
         .then(response => response.json())
         .then(data => {
             const contentDiv = document.getElementById('content');
