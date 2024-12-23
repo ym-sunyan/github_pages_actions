@@ -1,6 +1,6 @@
 {
   "model": {
-    "name": "tele chat 3b",
+    "name": "hunyuan_3b",
     "size": "3b"
   },
   "specifications": {
