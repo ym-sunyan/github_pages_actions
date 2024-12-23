@@ -15,7 +15,8 @@
     </style>
 </head>
 <body>
-    <div >测试</div>
+    <div>测试</div>
+    <input type="text" id="searchInput" placeholder="Search by Model" oninput="filterModels()">
     <div id="content"></div>
     <script>
         if ('serviceWorker' in navigator) {
@@ -24,39 +25,59 @@
                 .catch(error => console.error('Service Worker registration failed:', error));
         }
 
+        let modelsData = {};
+
         const timestamp = new Date().getTime();
         fetch(`output/data.json?t=${timestamp}`, { cache: 'no-store' })
             .then(response => response.json())
             .then(data => {
-                const contentDiv = document.getElementById('content');
-                contentDiv.innerHTML = '';
-
-                for (const [key, modelData] of Object.entries(data)) {
-                    if (key !== 'end') {
-                        const modelDiv = document.createElement('div');
-                        modelDiv.className = 'model-container';
-
-                        const modelTitle = document.createElement('h3');
-                        modelTitle.textContent = `Model: ${key}`;
-                        modelDiv.appendChild(modelTitle);
-
-                        const modelPath = document.createElement('p');
-                        modelPath.textContent = `Path: ${modelData.path}`;
-                        modelDiv.appendChild(modelPath);
-
-                        const modelCreatedTime = document.createElement('p');
-                        modelCreatedTime.textContent = `Created Time: ${modelData.created_time}`;
-                        modelDiv.appendChild(modelCreatedTime);
-
-                        const modelContent = document.createElement('pre');
-                        modelContent.textContent = JSON.stringify(modelData.content, null, 2);
-                        modelDiv.appendChild(modelContent);
-
-                        contentDiv.appendChild(modelDiv);
-                    }
-                }
+                modelsData = data;
+                displayModels(data);
             })
             .catch(error => console.error('Error fetching data:', error));
+
+        function displayModels(data) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = '';
+
+            for (const [key, modelData] of Object.entries(data)) {
+                if (key !== 'end') {
+                    const modelDiv = document.createElement('div');
+                    modelDiv.className = 'model-container';
+
+                    const modelTitle = document.createElement('h3');
+                    modelTitle.textContent = `Model: ${key}`;
+                    modelDiv.appendChild(modelTitle);
+
+                    const modelPath = document.createElement('p');
+                    modelPath.textContent = `Path: ${modelData.path}`;
+                    modelDiv.appendChild(modelPath);
+
+                    const modelCreatedTime = document.createElement('p');
+                    modelCreatedTime.textContent = `Created Time: ${modelData.created_time}`;
+                    modelDiv.appendChild(modelCreatedTime);
+
+                    const modelContent = document.createElement('pre');
+                    modelContent.textContent = JSON.stringify(modelData.content, null, 2);
+                    modelDiv.appendChild(modelContent);
+
+                    contentDiv.appendChild(modelDiv);
+                }
+            }
+        }
+
+        function filterModels() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const filteredData = {};
+
+            for (const [key, modelData] of Object.entries(modelsData)) {
+                if (key.toLowerCase().includes(searchInput)) {
+                    filteredData[key] = modelData;
+                }
+            }
+
+            displayModels(filteredData);
+        }
     </script>
 </body>
 </html>
