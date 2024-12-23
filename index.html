@@ -2,14 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Display Data</title>
+    <title>Markdown Notes</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="content"></div>
+    <div id="menu">
+        <button onclick="showEditor()">添加notes</button>
+        <button onclick="listNotes()">列出所有notes</button>
+    </div>
+    <div id="content">
+        <textarea id="markdown-editor"></textarea>
+        <button id="save-button" onclick="saveNote()">保存</button>
+        <div id="notes-list"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
