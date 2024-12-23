@@ -6,72 +6,117 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.16.13/antd.min.css">
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        #searchInput {
+            margin: 20px 0;
+            padding: 10px;
+            width: 300px;
+            text-align: center;
+        }
         .model-container {
+            border: 1px solid #000;
+            padding: 10px;
             margin: 10px;
+            width: 300px;
+            height: 280px;
+            background-color: #f0f0f0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: pre-wrap;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+        .model-container:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: -10px;
         }
     </style>
 </head>
 <body>
     <div>测试</div>
-    <div id="searchContainer"></div>
+    <input type="text" id="searchInput" placeholder="Search by Model" oninput="filterModels()">
     <div id="content"></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/antd/4.16.13/antd.min.js"></script>
     <script>
-        const { useState, useEffect } = React;
-        const { Input, Card, Row, Col } = antd;
-
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js')
                 .then(() => console.log('Service Worker registered'))
                 .catch(error => console.error('Service Worker registration failed:', error));
         }
 
-        const App = () => {
-            const [modelsData, setModelsData] = useState({});
-            const [searchTerm, setSearchTerm] = useState('');
+        let modelsData = {};
 
-            useEffect(() => {
-                const timestamp = new Date().getTime();
-                fetch(`output/data.json?t=${timestamp}`, { cache: 'no-store' })
-                    .then(response => response.json())
-                    .then(data => setModelsData(data))
-                    .catch(error => console.error('Error fetching data:', error));
-            }, []);
+        const timestamp = new Date().getTime();
+        fetch(`output/data.json?t=${timestamp}`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                modelsData = data;
+                displayModels(data);
+            })
+            .catch(error => console.error('Error fetching data:', error));
 
-            const filteredModels = Object.entries(modelsData).filter(([key]) =>
-                key.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+        function displayModels(data) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = '';
 
-            return (
-                <div>
-                    <Input
-                        placeholder="Search by Model"
-                        value={searchTerm}
-                        onChange={e => setSearchTerm(e.target.value)}
-                        style={{ marginBottom: '20px', width: '300px' }}
-                    />
-                    <Row gutter={[16, 16]}>
-                        {filteredModels.map(([key, modelData]) => (
-                            key !== 'end' && (
-                                <Col span={8} key={key}>
-                                    <Card title={`Model: ${key}`} className="model-container">
-                                        <p><strong>Path:</strong> {modelData.path}</p>
-                                        <p><strong>Created Time:</strong> {modelData.created_time}</p>
-                                        <pre>{JSON.stringify(modelData.content, null, 2)}</pre>
-                                    </Card>
-                                </Col>
-                            )
-                        ))}
-                    </Row>
-                </div>
-            );
-        };
+            let rowDiv = null;
+            let count = 0;
 
-        ReactDOM.render(<App />, document.getElementById('content'));
+            for (const [key, modelData] of Object.entries(data)) {
+                if (key !== 'end') {
+                    if (count % 3 === 0) {
+                        rowDiv = document.createElement('div');
+                        rowDiv.className = 'row';
+                        contentDiv.appendChild(rowDiv);
+                    }
+
+                    const modelDiv = document.createElement('div');
+                    modelDiv.className = 'model-container';
+
+                    const modelTitle = document.createElement('h3');
+                    modelTitle.textContent = `Model: ${key}`;
+                    modelDiv.appendChild(modelTitle);
+
+                    const modelPath = document.createElement('p');
+                    modelPath.textContent = `Path: ${modelData.path}`;
+                    modelDiv.appendChild(modelPath);
+
+                    const modelCreatedTime = document.createElement('p');
+                    modelCreatedTime.textContent = `Created Time: ${modelData.created_time}`;
+                    modelDiv.appendChild(modelCreatedTime);
+
+                    const modelContent = document.createElement('pre');
+                    modelContent.textContent = JSON.stringify(modelData.content, null, 2);
+                    modelDiv.appendChild(modelContent);
+
+                    rowDiv.appendChild(modelDiv);
+                    count++;
+                }
+            }
+        }
+
+        function filterModels() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const filteredData = {};
+
+            for (const [key, modelData] of Object.entries(modelsData)) {
+                if (key.toLowerCase().includes(searchInput)) {
+                    filteredData[key] = modelData;
+                }
+            }
+
+            displayModels(filteredData);
+        }
     </script>
 </body>
 </html>
