@@ -1,0 +1,32 @@
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+}
+
+#menu {
+    background-color: #f8f9fa;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #ddd;
+}
+
+#content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+#markdown-editor {
+    display: none;
+}
+
+#save-button {
+    display: none;
+}
+
+#notes-list {
+    display: none;
+}
