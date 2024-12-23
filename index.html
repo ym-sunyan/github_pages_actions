@@ -6,15 +6,14 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <style>
-        .model-container {
-            border: 1px solid #000;
-            padding: 10px;
-            margin: 10px 0;
-        }
-    </style>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <div>All Models</div>
+    <div id="searchContainer">
+        <input type="text" id="searchInput" placeholder="Search by Model Name" oninput="filterModels()">
+        <button id="clearButton" onclick="clearSearch()">Clear All</button>
+    </div>
     <div id="content"></div>
     <script>
         if ('serviceWorker' in navigator) {
@@ -23,39 +22,85 @@
                 .catch(error => console.error('Service Worker registration failed:', error));
         }
 
+        let modelsData = {};
+
         const timestamp = new Date().getTime();
         fetch(`output/data.json?t=${timestamp}`, { cache: 'no-store' })
             .then(response => response.json())
             .then(data => {
-                const contentDiv = document.getElementById('content');
-                contentDiv.innerHTML = '';
-
-                for (const [key, modelData] of Object.entries(data)) {
-                    if (key !== 'end') {
-                        const modelDiv = document.createElement('div');
-                        modelDiv.className = 'model-container';
-
-                        const modelTitle = document.createElement('h3');
-                        modelTitle.textContent = `Model: ${key}`;
-                        modelDiv.appendChild(modelTitle);
-
-                        const modelPath = document.createElement('p');
-                        modelPath.textContent = `Path: ${modelData.path}`;
-                        modelDiv.appendChild(modelPath);
-
-                        const modelCreatedTime = document.createElement('p');
-                        modelCreatedTime.textContent = `Created Time: ${modelData.created_time}`;
-                        modelDiv.appendChild(modelCreatedTime);
-
-                        const modelContent = document.createElement('pre');
-                        modelContent.textContent = JSON.stringify(modelData.content, null, 2);
-                        modelDiv.appendChild(modelContent);
-
-                        contentDiv.appendChild(modelDiv);
-                    }
-                }
+                console.log('Fetched data:', data); // 打印读取的内容
+                modelsData = data;
+                displayModels(data);
             })
             .catch(error => console.error('Error fetching data:', error));
+
+        function displayModels(data) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = '';
+
+            let rowDiv = null;
+            let count = 0;
+
+            for (const [key, modelData] of Object.entries(data)) {
+                if (key !== 'end') {
+                    if (count % 3 === 0) {
+                        rowDiv = document.createElement('div');
+                        rowDiv.className = 'row';
+                        contentDiv.appendChild(rowDiv);
+                    }
+
+                    const modelDiv = document.createElement('div');
+                    modelDiv.className = 'model-container';
+
+                    const modelTitle = document.createElement('h3');
+                    modelTitle.textContent = `Model: ${modelData.content.model.name}`;
+                    modelDiv.appendChild(modelTitle);
+
+                    const modelPath = document.createElement('p');
+                    modelPath.textContent = `Path: ${modelData.path}`;
+                    modelDiv.appendChild(modelPath);
+
+                    const modelCreatedTime = document.createElement('p');
+                    const create_time = modelData.created_time.split('.')[0];
+                    modelCreatedTime.textContent = `Created Time: ${create_time}`;
+                    modelDiv.appendChild(modelCreatedTime);
+
+                    const modelContent = document.createElement('pre');
+                    modelContent.textContent = JSON.stringify(modelData.content, null, 2);
+                    modelDiv.appendChild(modelContent);
+
+                    rowDiv.appendChild(modelDiv);
+                    count++;
+                }
+            }
+        }
+
+        function filterModels() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const filteredData = {};
+
+            for (const [key, modelData] of Object.entries(modelsData)) {
+                if (modelData === "end") { continue; }
+                
+                if (modelData.content.model.name.toLowerCase().includes(searchInput)) {
+                    filteredData[key] = modelData;
+                }
+                //if (modelData.content.model.name.toLowerCase().includes(searchInput)) {
+                //    filteredData[modelData.content.model.name] = modelData;
+                //}
+            }
+
+            if (Object.keys(filteredData).length === 0) {
+                document.getElementById('content').innerHTML = '<p>No models found</p>';
+            } else {
+                displayModels(filteredData);
+            }
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            displayModels(modelsData);
+        }
     </script>
 </body>
 </html>
