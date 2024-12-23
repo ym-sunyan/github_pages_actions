@@ -24,7 +24,7 @@ body {
     padding: 10px;
     margin: 10px;
     width: 350px;
-    height: 350px;
+    height: 320px;
     background-color: #f0f0f0;
     overflow: auto; /* 添加滚动条 */
     text-overflow: ellipsis;
