@@ -125,6 +125,7 @@
             const filteredData = {};
 
             for (const [key, modelData] of Object.entries(modelsData)) {
+                if (modelData === "end"){ continue}
                 console.log(modelData['content']['model']['name'])
                 console.log(modelData.content.model.name)
                 if (modelData.content.model.name.toLowerCase().includes(searchInput)) {
