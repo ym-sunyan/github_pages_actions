@@ -81,9 +81,13 @@
 
             for (const [key, modelData] of Object.entries(modelsData)) {
                 if (modelData === "end") { continue; }
+                
                 if (modelData.content.model.name.toLowerCase().includes(searchInput)) {
-                    filteredData[modelData.content.model.name] = modelData;
+                    filteredData[key] = modelData;
                 }
+                //if (modelData.content.model.name.toLowerCase().includes(searchInput)) {
+                //    filteredData[modelData.content.model.name] = modelData;
+                //}
             }
 
             if (Object.keys(filteredData).length === 0) {
