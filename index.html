@@ -2,29 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Markdown Notes</title>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Editor</title>
+    <style>
+        #toolbar {
+            margin-bottom: 10px;
+        }
+        .toolbar-button {
+            margin-right: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+    </style>
 </head>
 <body>
-    <div id="menu">
-        <button onclick="showEditor()">添加notes</button>
-        <button onclick="listNotes()">列出所有notes</button>
+    <div id="toolbar">
+        <button class="toolbar-button" onclick="insertBold()">Bold</button>
+        <button class="toolbar-button" onclick="insertItalic()">Italic</button>
     </div>
-    <div id="content">
-        <textarea id="markdown-editor"></textarea>
-        <button id="save-button" onclick="saveNote()">保存</button>
-        <div id="notes-list"></div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-    <script src="script.js"></script>
+    <textarea id="markdown-editor" rows="10" cols="50"></textarea>
+
+    <script>
+        function insertBold() {
+            const editor = document.getElementById('markdown-editor');
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const text = editor.value;
+            editor.value = text.substring(0, start) + '**' + text.substring(start, end) + '**' + text.substring(end);
+        }
+
+        function insertItalic() {
+            const editor = document.getElementById('markdown-editor');
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const text = editor.value;
+            editor.value = text.substring(0, start) + '*' + text.substring(start, end) + '*' + text.substring(end);
+        }
+    </script>
 </body>
 </html>
-
-
 <!-- <!DOCTYPE html>
 <html lang="en">
 <head>
