@@ -1,6 +1,6 @@
 {
   "model": {
-    "name": "tele chat 3b",
+    "name": "qwen_pro",
     "size": "3b"
   },
   "specifications": {
