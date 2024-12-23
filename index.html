@@ -35,18 +35,19 @@
 
             const displayModels = (data) => {
                 return Object.entries(data).map(([key, modelData], index) => {
-                    if (key !== 'end') {
-                        console.log(modelData)
-                        // return (
-                        //     <Col span={8} key={key}>
-                        //         <Card title={`Model: ${modelData.content.model.name}`} bordered={false}>
-                        //             <p>Path: {modelData.path}</p>
-                        //             <p>Created Time: {modelData.created_time.split('.')[0]}</p>
-                        //             <pre>{JSON.stringify(modelData.content, null, 2)}</pre>
-                        //         </Card>
-                        //     </Col>
-                        );
-                    }
+                    // if (key !== 'end') {
+                    //     console.log(modelData)
+                    //     return (
+                    //         <Col span={8} key={key}>
+                    //             <Card title={`Model: ${modelData.content.model.name}`} bordered={false}>
+                    //                 <p>Path: {modelData.path}</p>
+                    //                 <p>Created Time: {modelData.created_time.split('.')[0]}</p>
+                    //                 <pre>{JSON.stringify(modelData.content, null, 2)}</pre>
+                    //             </Card>
+                    //         </Col>
+                    //     );
+                    // }
+                    debugger
                     return null;
                 });
             };
