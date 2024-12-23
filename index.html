@@ -125,6 +125,8 @@
             const filteredData = {};
 
             for (const [key, modelData] of Object.entries(modelsData)) {
+                console.log(modelData['content']['model']['name'])
+                console.log(modelData.content.model.name)
                 if (modelData.content.model.name.toLowerCase().includes(searchInput)) {
                     filteredData[modelData.content.model.name] = modelData;
                 }
