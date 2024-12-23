@@ -7,100 +7,85 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.16.13/antd.min.css">
 </head>
 <body>
-    <div>All Models(master)</div>
-    <div id="searchContainer">
-        <input type="text" id="searchInput" placeholder="Search by Model Name" oninput="filterModels()">
-        <button id="clearButton" onclick="clearSearch()">Clear All</button>
-    </div>
-    <div id="content"></div>
+    <div id="root"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/antd/4.16.13/antd.min.js"></script>
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-                .then(() => console.log('Service Worker registered'))
-                .catch(error => console.error('Service Worker registration failed:', error));
-        }
+        const { useState, useEffect } = React;
+        const { Input, Button, Row, Col, Card } = antd;
 
-        let modelsData = {};
+        const App = () => {
+            const [modelsData, setModelsData] = useState({});
+            const [searchInput, setSearchInput] = useState('');
 
-        const timestamp = new Date().getTime();
-        fetch(`output/data.json?t=${timestamp}`, { cache: 'no-store' })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Fetched data:', data); // 打印读取的内容
-                modelsData = data;
-                displayModels(data);
-            })
-            .catch(error => console.error('Error fetching data:', error));
+            useEffect(() => {
+                const timestamp = new Date().getTime();
+                fetch(`output/data.json?t=${timestamp}`, { cache: 'no-store' })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Fetched data:', data);
+                        setModelsData(data);
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            }, []);
 
-        function displayModels(data) {
-            const contentDiv = document.getElementById('content');
-            contentDiv.innerHTML = '';
-
-            let rowDiv = null;
-            let count = 0;
-
-            for (const [key, modelData] of Object.entries(data)) {
-                if (key !== 'end') {
-                    if (count % 3 === 0) {
-                        rowDiv = document.createElement('div');
-                        rowDiv.className = 'row';
-                        contentDiv.appendChild(rowDiv);
+            const displayModels = (data) => {
+                return Object.entries(data).map(([key, modelData], index) => {
+                    if (key !== 'end') {
+                        return (
+                            <Col span={8} key={key}>
+                                <Card title={`Model: ${modelData.content.model.name}`} bordered={false}>
+                                    <p>Path: {modelData.path}</p>
+                                    <p>Created Time: {modelData.created_time.split('.')[0]}</p>
+                                    <pre>{JSON.stringify(modelData.content, null, 2)}</pre>
+                                </Card>
+                            </Col>
+                        );
                     }
+                    return null;
+                });
+            };
 
-                    const modelDiv = document.createElement('div');
-                    modelDiv.className = 'model-container';
-
-                    const modelTitle = document.createElement('h3');
-                    modelTitle.textContent = `Model: ${modelData.content.model.name}`;
-                    modelDiv.appendChild(modelTitle);
-
-                    const modelPath = document.createElement('p');
-                    modelPath.textContent = `Path: ${modelData.path}`;
-                    modelDiv.appendChild(modelPath);
-
-                    const modelCreatedTime = document.createElement('p');
-                    const create_time = modelData.created_time.split('.')[0];
-                    modelCreatedTime.textContent = `Created Time: ${create_time}`;
-                    modelDiv.appendChild(modelCreatedTime);
-
-                    const modelContent = document.createElement('pre');
-                    modelContent.textContent = JSON.stringify(modelData.content, null, 2);
-                    modelDiv.appendChild(modelContent);
-
-                    rowDiv.appendChild(modelDiv);
-                    count++;
+            const filterModels = () => {
+                const filteredData = {};
+                for (const [key, modelData] of Object.entries(modelsData)) {
+                    if (modelData === "end") continue;
+                    if (modelData.content.model.name.toLowerCase().includes(searchInput.toLowerCase())) {
+                        filteredData[key] = modelData;
+                    }
                 }
-            }
-        }
+                return filteredData;
+            };
 
-        function filterModels() {
-            const searchInput = document.getElementById('searchInput').value.toLowerCase();
-            const filteredData = {};
+            const clearSearch = () => {
+                setSearchInput('');
+            };
 
-            for (const [key, modelData] of Object.entries(modelsData)) {
-                if (modelData === "end") { continue; }
-                
-                if (modelData.content.model.name.toLowerCase().includes(searchInput)) {
-                    filteredData[key] = modelData;
-                }
-                //if (modelData.content.model.name.toLowerCase().includes(searchInput)) {
-                //    filteredData[modelData.content.model.name] = modelData;
-                //}
-            }
+            return (
+                <div>
+                    <div>All Models</div>
+                    <div id="searchContainer">
+                        <Input
+                            type="text"
+                            value={searchInput}
+                            placeholder="Search by Model Name"
+                            onChange={(e) => setSearchInput(e.target.value)}
+                            style={{ width: '200px', marginRight: '10px' }}
+                        />
+                        <Button onClick={clearSearch}>Clear All</Button>
+                    </div>
+                    <Row gutter={[16, 16]}>
+                        {displayModels(filterModels())}
+                    </Row>
+                </div>
+            );
+        };
 
-            if (Object.keys(filteredData).length === 0) {
-                document.getElementById('content').innerHTML = '<p>No models found</p>';
-            } else {
-                displayModels(filteredData);
-            }
-        }
-
-        function clearSearch() {
-            document.getElementById('searchInput').value = '';
-            displayModels(modelsData);
-        }
+        ReactDOM.render(<App />, document.getElementById('root'));
     </script>
 </body>
 </html>
