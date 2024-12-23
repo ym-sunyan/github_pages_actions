@@ -37,18 +37,11 @@
             useEffect(() => {
                 const timestamp = new Date().getTime();
                 fetch(`output/data.json?t=${timestamp}`, { cache: 'no-store' })
-                    .then(
-                        response => {
-                            response.json()
-                            debugger
-                        }
-                    )
-                    .then(
-                        data => {
-                            setModelsData(data)
-                            debugger
-                        }
-                    )
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Fetched data:', data); // 打印读取的内容
+                        setModelsData(data);
+                    })
                     .catch(error => console.error('Error fetching data:', error));
             }, []);
 
@@ -57,21 +50,34 @@
             );
 
             return (
-                <>
+                <div>
+                    <div id="searchContainer">
+                        <Input
+                            placeholder="Search by Model"
+                            value={searchTerm}
+                            onChange={e => setSearchTerm(e.target.value)}
+                            style={{ marginBottom: '20px', width: '300px' }}
+                        />
+                        <button onClick={() => setSearchTerm('')}>Clear All</button>
+                    </div>
                     <Row gutter={[16, 16]}>
-                        {filteredModels.map(([key, modelData]) => (
-                            key !== 'end' && (
-                                <Col span={8} key={key}>
-                                    <Card title={`Model: ${key}`} className="model-container">
-                                        <p><strong>Path:</strong> {modelData.path}</p>
-                                        <p><strong>Created Time:</strong> {modelData.created_time}</p>
-                                        <pre>{JSON.stringify(modelData.content, null, 2)}</pre>
-                                    </Card>
-                                </Col>
-                            )
-                        ))}
+                        {filteredModels.length > 0 ? (
+                            filteredModels.map(([key, modelData]) => (
+                                key !== 'end' && (
+                                    <Col span={8} key={key}>
+                                        <Card title={`Model: ${key}`} className="model-container">
+                                            <p><strong>Path:</strong> {modelData.path}</p>
+                                            <p><strong>Created Time:</strong> {modelData.created_time}</p>
+                                            <pre>{JSON.stringify(modelData.content, null, 2)}</pre>
+                                        </Card>
+                                    </Col>
+                                )
+                            ))
+                        ) : (
+                            <p>No models found</p>
+                        )}
                     </Row>
-                </>
+                </div>
             );
         };
 
