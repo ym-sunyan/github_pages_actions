@@ -1,6 +1,6 @@
 {
   "model": {
-    "name": "phi3_mini_128k/example1 test",
+    "name": "phi3_mini_128k/example1",
     "size": "3b"
   },
   "specifications": {
