@@ -1,22 +1,25 @@
-name: Update Data
+name: Update Data  # 工作流的名称，也就是actions显示的标题
 
+#on 是触发条件。这里设置两个触发条件
 on:
   push:
     paths:
-      - '**/config.txt'
-  workflow_dispatch:
+      - '**/config.txt' # 文件夹中包含config.txt，并且文件发生变化时候，响应的是push事件
+  workflow_dispatch:    # 手动触发响应的是workflow_dispatch 事件，如果没有这个将无法在actions中执行工作流
 
+#定义工作流
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # 指定运行环境，可以是ubuntu windows macos，一般使用ubuntu-latest。常规配置
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        persist-credentials: false
+    - name: Checkout repository  # 有意义的步骤名称即可
+      uses: actions/checkout@v4  # 一般使用工作流提供的最新版本， 版本查看 https://github.com/actions/checkout/releases
+      with: #这是向上一步 actions/checkout@v4 传递身份令牌参数
+        token: ${{ secrets.GITHUB_TOKEN }}  #因为使用GITHUB_TOKEN进行身份验证，所以需要提前设置其权限为读写
+        persist-credentials: false # 不保留 Git 凭据。这有助于提高安全性，防止凭据泄露
 
+    # ubuntu shell脚本 找出所有的config.txt，然后将数据写入output/data.json
     - name: Read config files and generate data.json
       run: |
         mkdir -p output
@@ -33,6 +36,7 @@ jobs:
         done
         echo '"end": "end"}' >> output/data.json
 
+    #将更新后的data.json，推送到github
     - name: Commit and push changes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
